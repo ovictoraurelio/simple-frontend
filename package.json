@@ -1,0 +1,40 @@
+{
+  "private": true,
+  "engines": {
+    "node": ">=7.10.0"
+  },
+  "devDependencies": {
+    "apache-server-configs": "^2.7.1",
+    "browser-sync": "^2.18.8",
+    "connect": "^3.0.1",
+    "connect-livereload": "^0.6.0",
+    "del": "^2.2.2",
+    "gulp": "^3.6.0",
+    "gulp-autoprefixer": "^4.0.0",
+    "gulp-cache": "^0.4.6",
+    "gulp-clean-css": "^3.2.0",
+    "gulp-compass": "^2.1.0",
+    "gulp-csso": "^3.0.0",
+    "gulp-filter": "^5.0.0",
+    "gulp-flatten": "^0.3.1",
+    "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^3.2.0",
+    "gulp-jshint": "^2.0.4",
+    "gulp-livereload": "^3.8.1",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-minify-html": "^1.0.6",
+    "gulp-plumber": "^1.1.0",
+    "gulp-ruby-sass": "^2.1.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-size": "^2.1.0",
+    "gulp-uglify": "^2.1.2",
+    "gulp-useref": "^3.1.2",
+    "jshint": "^2.9.4",
+    "jshint-stylish": "^2.2.1",
+    "main-bower-files": "^2.1.0",
+    "opn": "^5.0.0",
+    "serve-index": "^1.1.4",
+    "serve-static": "^1.4.0",
+    "wiredep": "^4.0.0"
+  }
+}
