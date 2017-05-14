@@ -1,0 +1,9 @@
+{
+  "name": "sd",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "MDBootstrap": "^4.3.2",
+    "font-awesome": "fontawesome#^4.7.0"
+  }
+}
