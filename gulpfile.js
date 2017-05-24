@@ -108,7 +108,7 @@ gulp.task('wiredep', function () {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('watch', ['connect'], function () {
+gulp.task('watch', /*['connect'],*/ function () {
   $.livereload.listen();
 
   gulp.watch([
