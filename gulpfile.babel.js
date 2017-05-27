@@ -9,47 +9,41 @@
 ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ */
 
 'use strict';
-const os = require('os');
-var gulp = require('gulp'),
-		$ = require('gulp-load-plugins')(),
-		browserSync = require('browser-sync'),
-		htmlmin = require('gulp-htmlmin'),
-		gulpJshint = require('gulp-jshint'),
-		sass = require('gulp-sass'),
-		gutil = require('gulp-util'),
-		useref = require('gulp-useref'),
-		uglify = require('gulp-uglify'),
-		cleanCSS = require('gulp-clean-css'),
-		liveReload = require('gulp-livereload'),
-		gulpif = require('gulp-if');
+import  os from 'os';
+import  gulp from 'gulp';
+import loadPlugins from 'gulp-load-plugins';
+import browserSync from 'browser-sync';
+import htmlmin from 'gulp-htmlmin';
+
+var $ = loadPlugins();
 var reload = browserSync.reload;
 
-gulp.task('styles', function() {
+gulp.task('styles', () =>{
 	return gulp.src('app/styles/main.scss')
-		.pipe(sass().on('error', sass.logError))
+		.pipe($.sass().on('error', $.sass.logError))
 		.pipe(gulp.dest('app/styles'))
 });
 
-gulp.task('jshint', function () {
+gulp.task('jshint', () => {
   return gulp.src('app/scripts/**/*.js')
-    .pipe(gulpJshint())
-    .pipe(gulpJshint.reporter('jshint-stylish'))
-    .pipe(gulpJshint.reporter('fail'));
+    .pipe($.jshint())
+    .pipe($.jshint.reporter('jshint-stylish'))
+    .pipe($.jshint.reporter('fail'));
 });
 
-gulp.task('html', ['styles'], function () {
-  var assets = useref({searchPath: '{.tmp,app}'});
+gulp.task('html', ['styles'], () => {
+  var assets = $.useref({searchPath: '{.tmp,app}'});
 
   return gulp.src('app/*.html')
     .pipe(assets)
-    .pipe($.if('*.js', uglify())).on('error', gutil.log)
-    .pipe($.if('*.css', cleanCSS({compatibility: 'ie8'})))
-    .pipe(useref())
+    .pipe($.if('*.js', $.uglify()))//.on('error', $.gutil.log)
+    .pipe($.if('*.css', $.cleanCss({compatibility: 'ie8'})))
+    .pipe($.useref())
     .pipe($.if('*.html', htmlmin({collapseWhitespace: true, removeComments: true, empty: true, quotes: true,loose: true})))
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('images', function () {
+gulp.task('images', () => {
   return gulp.src('app/images/**/*')
     .pipe($.cache($.imagemin({
       progressive: true,
@@ -58,14 +52,14 @@ gulp.task('images', function () {
     .pipe(gulp.dest('dist/images'));
 });
 
-gulp.task('fonts', function () {
+gulp.task('fonts', () => {
   return gulp.src(require('main-bower-files')().concat('app/fonts/**/*'))
     .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
     .pipe($.flatten())
     .pipe(gulp.dest('dist/fonts'));
 });
 
-gulp.task('extras', function () {
+gulp.task('extras', () => {
   return gulp.src([
     'app/*.*',
     '!app/*.html',
@@ -77,7 +71,7 @@ gulp.task('extras', function () {
 
 gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
 
-gulp.task('serve', ['styles'], function () {
+gulp.task('serve', ['styles'], () => {
   browserSync({
     notify: false,
     server: ['.tmp', 'app']
@@ -89,14 +83,14 @@ gulp.task('serve', ['styles'], function () {
   gulp.watch(['app/images/**/*'], reload);
 });
 
-gulp.task('serve:dist', ['default'], function () {
+gulp.task('serve:dist', ['default'], () => {
   browserSync({
     notify: false,
     server: 'dist'
   });
 });
 
-gulp.task('wiredep', function () {
+gulp.task('wiredep', () => {
   var wiredep = require('wiredep').stream;
 
   gulp.src('app/styles/*.scss')
@@ -108,7 +102,7 @@ gulp.task('wiredep', function () {
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('watch', /*['connect'],*/ function () {
+gulp.task('watch', /*['connect'],*/ () => {
   $.livereload.listen();
 
   gulp.watch([
@@ -122,10 +116,10 @@ gulp.task('watch', /*['connect'],*/ function () {
   gulp.watch('bower.json', ['wiredep']);
 });
 
-gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], function () {
+gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
-gulp.task('default', ['clean'], function () {
+gulp.task('default', ['clean'], () => {
   gulp.start('build');
 });
