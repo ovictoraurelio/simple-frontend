@@ -14,6 +14,7 @@ import  gulp from 'gulp';
 import loadPlugins from 'gulp-load-plugins';
 import browserSync from 'browser-sync';
 import htmlmin from 'gulp-htmlmin';
+import bowerFiles from 'main-bower-files';
 
 var $ = loadPlugins();
 var reload = browserSync.reload;
@@ -53,7 +54,7 @@ gulp.task('images', () => {
 });
 
 gulp.task('fonts', () => {
-  return gulp.src(require('main-bower-files')().concat('app/fonts/**/*'))
+  return gulp.src(bowerFiles().concat('app/fonts/**/*'))
     .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
     .pipe($.flatten())
     .pipe(gulp.dest('dist/fonts'));
@@ -74,7 +75,14 @@ gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
 gulp.task('serve', ['styles'], () => {
   browserSync({
     notify: false,
-    server: ['.tmp', 'app']
+	//	browser: ["google-chrome"], Because I like Firefox to personal use and chrome to debug applications
+	//      server: ['.tmp', 'app']
+		server: {
+			baseDir: './app',
+			routes: {
+	        '/bower_components': 'bower_components'
+	    }
+		}
   });
 
   gulp.watch(['app/**/*.html'], reload);
@@ -93,16 +101,19 @@ gulp.task('serve:dist', ['default'], () => {
 gulp.task('wiredep', () => {
   var wiredep = require('wiredep').stream;
 
+
   gulp.src('app/styles/*.scss')
     .pipe(wiredep())
     .pipe(gulp.dest('app/styles'));
 
   gulp.src('app/*.html')
-    .pipe(wiredep())
+    .pipe(wiredep({
+            ignorePath: /^(\.\.\/)+/
+        }))
     .pipe(gulp.dest('app'));
 });
 
-gulp.task('watch', /*['connect'],*/ () => {
+gulp.task('watch', () => {
   $.livereload.listen();
 
   gulp.watch([
@@ -123,3 +134,4 @@ gulp.task('build', ['jshint', 'html', 'images', 'fonts', 'extras'], () => {
 gulp.task('default', ['clean'], () => {
   gulp.start('build');
 });
+
